@@ -6,7 +6,7 @@ module.exports = {
     web: {
     }
   },
-  eslint: true,
+  eslint: false,
   compilers: {
     sass: {
       outputStyle: 'compact'

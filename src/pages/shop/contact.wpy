@@ -1,8 +1,8 @@
 <template>
   <view class="container">
     <view class="header  column-center">
-      <text class="title">小程序，商家营销利器</text>
-      <text class="describe">帮助商家提前布局微信生态，抢占第一波红利</text>
+      <text class="title">慧趣科技</text>
+      <text class="describe">助力装修市场，良好发展</text>
       <view class="contact column-center" @tap="call">电话咨询</view>
       <image class="preview" mode="aspectFit" src="http://img.leshare.shop/leshare/xc.png"></image>
     </view>
@@ -23,7 +23,7 @@
     def = {}
     data = {...this.def};
     onShareAppMessage () {
-      const title = '乐享商家助手';
+      const title = '慧趣科技';
       const url = '/pages/home/index';
       return Tips.share(title, url, title);
     }

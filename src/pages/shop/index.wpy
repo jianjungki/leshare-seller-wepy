@@ -15,22 +15,22 @@
 
       <NavNotice title="店铺公告" url="../notice/list"/>
 
-      <NavManusl title="手工下单" url="../manusl/index" type="manusl"/>
+      <!-- <NavManusl title="手工下单" url="../manusl/index" type="manusl"/> -->
 
-      <NavDelivery title="运费模板" url="../delivery/list" type="delivery"/>
+      <!-- <NavDelivery title="运费模板" url="../delivery/list" type="delivery"/> -->
 
-      <NavVip title="会员卡管理" url="../vip/vip_card" type="vip"/>
+      <!-- <NavVip title="会员卡管理" url="../vip/vip_card" type="vip"/> -->
 
-      <NavDeliver title="配送员管理" url="../delivery/deliver_list" type="deliveryUser"/>
+      <!-- <NavDeliver title="配送员管理" url="../delivery/deliver_list" type="deliveryUser"/> -->
 
-      <NavReduce title="优惠管理" url="../shop/reduce_list" type="discount"/>
+      <!-- <NavReduce title="优惠管理" url="../shop/reduce_list" type="discount"/> -->
 
-      <NavCategory title="分类管理" url="../goods/category"/>
+      <!-- <NavCategory title="分类管理" url="../goods/category"/> -->
 
       <NavComment title="商品评论" url="../comment/comment"/>
 
 
-      <NavShops title="切换店铺" @tap.user="shops"/>
+      <!-- <NavShops title="切换店铺" @tap.user="shops"/> -->
 
       <NavLogout title="切换账号" @tap.user="logout"/>
     </view>

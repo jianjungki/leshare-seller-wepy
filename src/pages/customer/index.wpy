@@ -47,7 +47,7 @@
 
       mixins = [base, pagination];
       config = {
-        'navigationBarTitleText': '乐享客服',
+        'navigationBarTitleText': '慧趣客服',
         'navigationBarTextStyle': 'white',
         'navigationBarBackgroundColor': '#3b3a40'
       };
