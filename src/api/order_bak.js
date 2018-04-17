@@ -2,7 +2,7 @@ import base from './base';
 import Page from '../utils/Page';
 import {TYPE, ACTION, orderUtils as utils} from './order_const';
 
-export default class orderNew extends base {
+export default class order extends base {
   static closeReacon = [
     '已缺货无法交易', '协商取消交易', '已通过货到付款交易', '无法联系上买家', '买家误拍或重拍', '其他'
   ];
@@ -18,7 +18,7 @@ export default class orderNew extends base {
    * 分页方法
    */
   static page() {
-    const url = `${this.ownUrl}/orders`;
+    const url = `${this.baseUrl}/orders`;
     return new Page(url, this._processOrderListItem.bind(this));
   }
 
@@ -182,12 +182,11 @@ export default class orderNew extends base {
    * 处理订单列表数据
    */
   static _processOrderListItem(order) {
-    console.log(1111);
     // 处理动作
     this._processOrderAction(order);
     this._processOrderStatusDesc(order);
     // 所有情况均展现动作条
-    order.isAction = true; 
+    order.isAction = true;
     // 处理订单价格
     this._processOrderPrice(order);
     // 处理商品信息

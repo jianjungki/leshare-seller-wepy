@@ -80,6 +80,7 @@
       }
       // 页面加载
       this.page = order.page();
+      console.log("page", this.page)
       this.orders = this.page.list;
       await this.next();
       // 事件监听

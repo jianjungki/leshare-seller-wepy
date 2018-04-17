@@ -197,9 +197,9 @@
       // 订单数量比较
       if (hasNewOrder) {
         // 新订单通知
-        wepy.playBackgroundAudio({
+        /*wepy.playBackgroundAudio({
           dataUrl: 'http://img.leshare.shop/leshare/new_order.mp3'
-        });
+        });*/
         Tips.modal('您有新的订单，请及时处理');
       }
     }

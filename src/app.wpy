@@ -15,13 +15,11 @@
       auth: {},
       shop: {},
       appCode: 'XXX',
-      bombUrl: ' https://api.bmob.cn/1',
+      ownUrl: 'http://4wyyvdhq.qcloud.la',
       baseUrl: 'https://www.easy-mock.com/mock/5aa15ee0f6ed4a592fb5d6ec/leshare',
       version: 'v3.0.0'
     };
 
-    //var Bmob = require('utils/bmob.js');
-    //Bmob.initialize("81aa2ce3dcf6b993ae7eb2088edfb9e2", "5fdf1dc29986d74f8816bab1a66b3291");
     constructor() {
       super();
       // 注册中间件
@@ -64,7 +62,6 @@
       const ext = wepy.getExtConfigSync();
       console.info('[ext] init ext data', ext);
       Object.assign(wepy.$instance.globalData, ext);
-      //Object.assign(wepy.$instance.Bmob, ext);
       this.syncStoreConfig({'login_code': 'login_code'}, 'login_code');
       this.syncStoreConfig({'shop_id': 'shop_id'}, 'shop_id');
     }
@@ -78,6 +75,10 @@
 
     config = {
       pages: [
+        
+        'pages/worker/find',
+        'pages/worker/detail',
+        'pages/order/index',
         'pages/home/index',
         'pages/customer/address_list',
         'pages/customer/coupon_send',
@@ -85,7 +86,7 @@
         'pages/customer/member_info',
         'pages/customer/index',
         'pages/customer/chat',
-        'pages/order/index',
+        
         'pages/shop/index',
         'pages/shop/contact',
         'pages/shop/status',

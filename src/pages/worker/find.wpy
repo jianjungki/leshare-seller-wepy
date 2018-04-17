@@ -1,0 +1,72 @@
+<style  lang="less">
+.filter-area {
+  height: 80px;
+}
+</style>
+<template>
+  <view class="container">
+      <view class='filter-area'></view>
+      <SearchBar></SearchBar>
+      <repeat for="{{page.list}}" key="index" index="index" item="item">
+        <worker :item.sync="item"  @tap.user="detail"></worker>
+      </repeat>
+    <toast />
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import workerlist from '../../api/worker'
+  import Worker from '../../components/worker/worker'
+  import SearchBar from '../../components/weui/search_bar'
+  import pagination from '../../mixins/pagination'
+  import Toast from 'wepy-com-toast'
+
+  export default class Find extends wepy.page {
+    config = {
+      navigationBarTitleText: '搜索师傅'
+    }
+    components = {
+      worker: Worker,
+      SearchBar: SearchBar,
+      toast: Toast
+    }
+    data = {
+      mynum: 20,
+      userInfo: {
+        nickName: '测试用户'
+      },
+      page: {
+        list: []
+      }
+    };
+    mixins = [pagination];
+    methods = {
+      plus () {
+        this.mynum++
+      },
+      toast () {
+        let promise = this.$invoke('toast', 'show', {
+          title: '自定义标题',
+          img: 'https://raw.githubusercontent.com/kiinlam/wetoast/master/images/star.png'
+        })
+
+        promise.then((d) => {
+          console.log('toast done')
+        })
+      },
+      detail(workerId) {
+        console.log("orderid:"+workerId);
+        this.$navigate('detail', {workerId});
+      },
+      tap () {
+        console.log('do noting from ' + this.$name)
+      }
+    }
+    async onLoad() {
+      this.page = workerlist.page()
+      this.workers = this.page.list;
+      await this.next()
+    }
+  }
+</script>

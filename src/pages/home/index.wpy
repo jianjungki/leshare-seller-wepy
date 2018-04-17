@@ -103,7 +103,7 @@
           }
           await auth.setConfig('login_code', loginCode);
           await auth.removeConfig('shop_id');
-          this.$redirect('shops');
+          this.$redirect('home');
         } catch (e) {
           this.tips(e.message);
         } finally {
@@ -120,7 +120,7 @@
           this.$invoke('VCode', 'cd', 60);
           Tips.success('验证码已发送');
         } catch (err) {
-          if (err.serverCode == 10005) {
+          if (err.code == 1024) {
             console.debug('请求验证码太频繁');
             this.$invoke('VCode', 'cd', 60);
           }

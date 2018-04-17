@@ -138,6 +138,10 @@
       OrderGoods: OrderGoods,
       OrderAction: OrderAction
     };
+
+    onShow () {
+        console.log(this.props)
+    }
   }
 </script>
 
