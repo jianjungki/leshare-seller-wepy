@@ -1,6 +1,6 @@
 <template>
   <view class="container">
-      <SearchBar></SearchBar>
+      <Wxsearch></Wxsearch>
        <Selector></Selector>
       <repeat for="{{page.list}}" key="index" index="index" item="item">
         <worker :item.sync="item"  @tap.user="detail"></worker>
@@ -13,7 +13,7 @@
   import wepy from 'wepy'
   import workerlist from '../../api/worker'
   import Worker from '../../components/worker/worker'
-  import SearchBar from '../../components/worker/searchbar'
+  import Wxsearch from '../../components/worker/wxsearch'
   import Selector from '../../components/worker/selector'
   import pagination from '../../mixins/pagination'
   import Toast from 'wepy-com-toast'
@@ -24,7 +24,7 @@
     }
     components = {
       worker: Worker,
-      SearchBar: SearchBar,
+      Wxsearch: Wxsearch,
       Selector: Selector,
       toast: Toast
     }

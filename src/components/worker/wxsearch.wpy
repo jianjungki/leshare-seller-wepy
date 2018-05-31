@@ -1,0 +1,273 @@
+<style>
+    @import "../../styles/wxSearch";
+</style>
+<template name="wxSearch">
+  <view class="wxSearch" bindtap="wxSearchTap"  style="background:#fff;display:{{wxSearchData.view.isShow ? 'block':'none'}};height:{{searchbarHeght}}px;top:{{barHeight}}px;">
+    <view  class="wxSearchInner">
+        <view class="wxSearchMindKey">
+            <view class="wxSearchMindKeyList">
+                <block wx:for="{{mindKeys}}"  wx:key="index">
+                    <view class="wxSearchMindKeyItem" bindtap="wxSearchKeyTap" data-key="{{item}}">{{item}}</view>
+                </block>
+            </view>
+        </view>
+
+        <view class="wxSearchKey" style="display:{{wxSearchData.view.isShowSearchKey ? 'block':'none'}}">
+            <text class="wxSearchTitle">热门搜索</text>
+            <view class="wxSearchKeyList">
+                <block wx:for="{{keys}}"  wx:key="index">
+                    <view class="wxSearchKeyItem" bindtap="wxSearchKeyTap" data-key="{{item}}">{{item}}</view>
+                </block>
+            </view>
+        </view>
+        <view class="wxSearchHistory" style="display:{{wxSearchData.view.isShowSearchHistory ? 'block':'none'}}">
+            <text class="wxSearchTitle">搜索历史</text>
+            <view wx:if="{{wxSearchData.his[0]}}" class="wxSearchHistoryList">
+                <block wx:for="{{wxSearchData.his}}"  wx:key="index" >
+                    <view class="wxSearchHistoryItem">
+                        <text class="wxSearchHistoryItemText" bindtap="wxSearchKeyTap" data-key="{{item}}">{{item}}</text> 
+                        <text class="wxSearchHistoryItemDel" bindtap="wxSearchDeleteKey" data-key="{{item}}" 
+                        >删除</text>
+                    </view>
+                </block>
+                <view class="wxSearchDeleteAllBtn" bindtap="wxSearchDeleteAll">清除历史</view>
+            </view>
+            <view wx:else>
+                <view class="wxSearchHistoryEmpty">搜索历史为空</view>
+            </view>
+        </view>
+    </view>
+  </view>
+</template>
+
+
+<script>
+    import wepy from 'wepy';
+    var __mindKeys = [
+        '111'
+    ];
+    export default class weSearch extends wepy.component {
+        props = {
+            configconfig:{
+                style: "wxSearchNormal"
+            },
+            barHeight: {
+                type: Number,
+                default: 46
+            },
+            searchbarHeght: {
+                type: Number,
+                default: 20
+            },
+            keys:{
+                type: Array,
+                default: []
+            },
+            
+            mindKeys:{
+                type: Array,
+                default: []
+            },
+            wxSearchData:{
+                type: Object,
+                default:{ 
+                    value:{
+                        
+                    },
+                    his:[],
+                    configconfig:{
+                        style: "wxSearchNormal"
+                    },
+                    view:{
+                        hidden: true,
+                        searchbarHeght: 20,
+                        isShowSearchKey: true,
+                        isShowSearchHistory: true,
+                    }
+                }
+            }
+        };
+
+        onLoad() {
+            console.log(this.data.mindKeys);
+            let that = this
+
+            if(typeof(isShowKey) == 'undefined') {
+                this.wxSearchData.view.isShowSearchKey = true;
+            } else {
+                this.wxSearchData.view.isShowSearchKey = isShowKey;
+            }
+
+            if(typeof(isShowHis) == 'undefined') {
+                this.wxSearchData.view.isShowSearchHistory = true;
+            } else {
+                this.wxSearchData.view.isShowSearchHistory = isShowHis;
+            }
+
+            wx.getSystemInfo({
+                success: function(res) {
+                    console.log(res)
+                    var wHeight = res.windowHeight;
+                    that.searchbarHeght = wHeight - that.barHeight;
+                    console.log(that.searchbarHeght)
+                }
+            })
+            this.methods.getHisKeys(this)
+        }
+
+        methods = {
+            showInput () {
+                this.inputShowed = true;
+            },
+            hideInput () {
+                this.inputVal = '';
+                this.inputShowed = false;
+            },
+            clearInput () {
+                this.inputVal = '';
+            },
+            inputTyping (e) {
+                this.inputVal = e.detail.value;
+            },
+            wxSearchFocus(e, that, callBack) {
+                this.methods.getHisKeys(this)
+                //console.log(that.props)
+                var temData = this.wxSearchData;
+                
+                temData.view.isShow = true;
+                this.wxSearchData = temData
+                //回调
+                if (typeof (callBack) == "function") {
+                    callBack();
+                }
+            },
+            wxSearchInput(e, that, callBack){
+                var temData = this.wxSearchData;
+                var text = e.detail.value;
+                var mindKeys = [];
+                if(typeof(text) == "undefined" || text.length == 0){
+                    
+                }else{
+                    for(var i = 0; i < __mindKeys.length; i++){
+                        var mindKey = __mindKeys[i];
+                        if(mindKey.indexOf(text) > -1){
+                            mindKeys.push(mindKey);
+                        }
+                    }
+                }
+                temData.value = text;
+                temData.mindKeys = mindKeys;
+                
+                this.wxSearchData= temData
+                
+            },
+            wxSearchBlur(e, that, callBack) {
+                var temData = this.data.wxSearchData;
+                temData.value = e.detail.value;
+                this.wxSearchData= temData
+                
+                if (typeof (callBack) == "function") {
+                    callBack();
+                }
+            },
+            wxSearchHiddenPancel(that){
+                console.log("wxSearchHiddenPancel")
+                var temData = that.wxSearchData;
+                temData.view.isShow = false;
+                this.wxSearchData= temData
+                
+            },
+            wxSearchKeyTap(e, that, callBack) {
+                console.log("wxSearchKeyTap")
+                //回调
+                var temData = this.data.wxSearchData;
+                temData.value = e.target.dataset.key;
+                this.wxSearchData = temData
+                
+                if (typeof (callBack) == "function") {
+                    callBack();
+                }
+            },
+            wxSearchDeleteKey(e, that) {
+                var text = e.target.dataset.key;
+                var value = wx.getStorageSync('wxSearchHisKeys');
+                console.log("text:"+text)
+                console.log("index:"+value.indexOf(text))
+                value.splice(value.indexOf(text),1);
+                let one = this
+                wx.setStorage({
+                    key:"wxSearchHisKeys",
+                    data:value,
+                    success: function(){
+                        one.methods.getHisKeys(that);
+                    }
+                })
+            },
+            wxSearchDeleteAll(that){
+                let one = this
+                wx.removeStorage({
+                    key: 'wxSearchHisKeys',
+                    success: function(res) {
+                        var value = [];
+                        var temData = one.wxSearchData;
+                        temData.his = value;
+                        one.wxSearchData = temData
+                    } 
+                })
+            },
+            wxSearchAddHisKey(e, that) {
+                console.log("test search 111")
+                this.methods.wxSearchHiddenPancel(that);
+                var text = this.wxSearchData.value;
+                if(typeof(text) == "undefined" || text.length == 0){return;}
+                var value = wx.getStorageSync('wxSearchHisKeys');
+                let one = this
+                if(value){
+                    if(value.indexOf(text) < 0){
+                        value.unshift(text);
+                    }
+                    
+                    wx.setStorage({
+                        key:"wxSearchHisKeys",
+                        data:value,
+                        success: function(){
+                            one.methods.getHisKeys(that);
+                        }
+                    })
+                }else{
+                    value = [];
+                    value.push(text);
+                    wx.setStorage({
+                        key:"wxSearchHisKeys",
+                        data:value,
+                        success: function(){
+                            one.methods.getHisKeys(that);
+                        }
+                    })
+                }
+                
+            },
+            getHisKeys(that) {
+                console.log("getHisKeys")
+                var value = [];
+                try {
+                    value = wx.getStorageSync('wxSearchHisKeys')
+                    console.log(value)
+                    if (value) {
+                        // Do something with return value
+                        
+                        var temData = that.wxSearchData;
+                        console.log(temData)
+                        temData.his = value;
+                        
+                        this.wxSearchData = temData
+                    }
+                } catch (e) {
+                    // Do something when catch error
+                }
+                
+            }
+
+        }
+    }
+</script>
