@@ -4,12 +4,12 @@ import base from './base'
 import {TYPE, ACTION, orderUtils as utils} from './order_const';
 export default class work extends base{
   static page(){
-      const url = `http://localhost/api/worker`;
+      const url = `https://huiqu-tech.club/api/worker`;
       return new Page(url, this._processOrderListItem.bind(this));
-  }
+  };
 
-  async static detail(workerId){
-    const url = `http://localhost/api/worker/${workerId}`;
+  async detail(workerId){
+    const url = `https://huiqu-tech.club/api/worker/${workerId}`;
     const data = await this.get(url);
     return this._processOrderDetail(data);
   }

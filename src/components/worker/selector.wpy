@@ -1,32 +1,36 @@
+<style>
+    @import "../../styles/selector";
+</style>
 <template>
-    <view class="product-list">
-    <!--条件选择-->
     <view class="choice-bar">
-        <view bindtap="choiceItem" data-item="1" class="chioce-item chioce-item-first" hover-class="click-once-opaque">{{activeDistrictName}}
-        <image class="icon-chioce" src="{{districtChioceIcon}}"></image>
+        <view bindtap="choiceItem" id="area" data-item="1" class="chioce-item chioce-item-first" hover-class="click-once-opaque">{{activeDistrictName}}
+        <image class="icon-chioce" src="{{districtChioceIcon}}"/>
         </view>
-        <view bindtap="choiceItem" data-item="2" class="chioce-item" hover-class="click-once-opaque">{{activeSortingName}}
-        <image class="icon-chioce" src="{{sortingChioceIcon}}"></image>
+        <view bindtap="choiceItem" id="sort" data-item="2" class="chioce-item" hover-class="click-once-opaque">{{activeSortingName}}
+        <image class="icon-chioce" src="{{sortingChioceIcon}}"/>
         </view>
-        <view bindtap="choiceItem" data-item="3" class="chioce-item chioce-item-last" hover-class="click-once-opaque">筛选
-        <image class="icon-chioce" src="/images/icon-chioce.png"></image>
+        <view bindtap="choiceItem" id="filter" data-item="3" class="chioce-item chioce-item-last" hover-class="click-once-opaque">筛选
+        <image class="icon-chioce" src="../../images/selector/icon-chioce.png"/>
         </view>
         <view class="district-list{{!chioceDistrict?' chioce-list-hide':' chioce-list-show'}}">
         <view class="district-left">
-            <view wx:for="{{districtList}}" catchtap="selectDistrictParent" data-index="{{index}}" class="district-parent{{index==activeDistrictParentIndex||index==0&&activeDistrictParentIndex==-1?' district-parent-active':''}}" hover-class="click-once">{{item.district_name}}</view>
+            <view wx:key="index" wx:for="{{districtList}}" catchtap="selectDistrictParent" data-index="{{index}}" 
+              class="district-parent{{index==activeDistrictParentIndex||index==0&&activeDistrictParentIndex==-1?' district-parent-active':''}}" 
+              hover-class="click-once">{{item.district_name}}</view>
         </view>
         <view class="district-right">
             <scroll-view scroll-y class="scroll-district" scroll-top="{{scrollTop}}" scroll-into-view="{{scrollIntoView}}">
-            <view id="{{index}}" wx:for="{{districtList[activeDistrictParentIndex==-1?0:activeDistrictParentIndex].district_children_list}}" catchtap="selectDistrictChildren" data-index="{{index}}" class="district-children" hover-class="click-once">{{item.district_name}}</view>
+              <view wx:key="index" id="{{index}}" wx:for="{{districtList[activeDistrictParentIndex==-1?0:activeDistrictParentIndex].district_children_list}}" 
+              catchtap="selectDistrictChildren" data-index="{{index}}" class="district-children" hover-class="click-once">{{item.district_name}}</view>
             </scroll-view>
         </view>
         </view>
         <view class="sorting-list{{!chioceSorting?' chioce-list-hide':' chioce-list-show'}}">
-        <view wx:for="{{sortingList}}" catchtap="selectSorting" data-index="{{index}}" class="sorting-item" hover-class="click-once">{{item.value}}</view>
+          <view wx:key="index" wx:for="{{sortingList}}" catchtap="selectSorting" data-index="{{index}}" class="sorting-item" hover-class="click-once">{{item.value}}</view>
         </view>
         <view class="filter-list{{!chioceFilter?' chioce-list-hide':' chioce-list-show'}}">
-        <view wx:for="{{filterList}}" catchtap="selectFilter" data-index="{{index}}" class="filter-item" hover-class="click-once">{{item.value}}
-            <image hidden="{{!item.selected}}" class="icon-selected" src="/images/icon-selected.png"></image>
+        <view wx:key="index" wx:for="{{filterList}}" catchtap="selectFilter" data-index="{{index}}" class="filter-item" hover-class="click-once">{{item.value}}
+            <image hidden="{{!item.selected}}" class="icon-selected" src="../../images/selector/icon-selected.png"/>
         </view>
         <view class="filter-footer">
             <button catchtap="resetFilter" plain="true" class="button-reset" type="default" size="mini" hover-class="click-once">重置</button>
@@ -34,9 +38,180 @@
         </view>
         </view>
     </view>
-    <view bindtap="hideAllChioce" class="mask" hidden="{{!chioceDistrict&&!chioceSorting&&!chioceFilter}}">
-    </view>
-    <import src="../template/template.wxml" />
-    <template is="loading" data="{{isLoading,loadOver}}" />
-    </view>
 </template>
+
+
+<script>
+ import wepy from 'wepy'
+  export default class Selector extends wepy.component {
+      data = {
+        typeID: 0,
+        isLoading: true,
+        loadOver: false,
+        districtList: [],
+        sortingList: [{ 
+            key: 1, value: "智能排序" 
+        }, {
+            key: 2, value: "价格最低"
+        }, {
+            key: 3, value: "价格最高"
+        }, {
+            key: 4, value: "服务最好"
+        }, {
+            key: 5, value: "环境最好"
+        }, {
+            key: 6, value: "预约最快"
+        }],
+        filterList: [{ 
+            key: 1, value: "周日营业", selected: false 
+        }, {
+            key: 2, value: "官方假期营业（香港）", selected: false
+        }, {
+            key: 3, value: "可为儿童接种疫苗", selected: false
+        }, {
+            key: 4, value: "网上付款", selected: false
+        }, {
+            key: 5, value: "到诊所现场付款", selected: false
+        }],
+        districtChioceIcon: "../../images/selector/icon-go-black.png",
+        sortingChioceIcon: "../../images/selector/icon-go-black.png",
+        chioceDistrict: false,
+        chioceSorting: false,
+        chioceFilter: false,
+        activeDistrictParentIndex: -1,
+        activeDistrictChildrenIndex: -1,
+        activeDistrictName: "区域位置",
+        scrollTop: 0,
+        scrollIntoView: 0,
+        activeSortingIndex: -1,
+        activeSortingName: "综合排序"
+    };
+
+    methods = {
+        onPullDownRefresh() {
+          this.setData({
+            productList: [],
+            pageIndex: 1,
+            loadOver: false,
+            isLoading: true
+          })
+          //this.getProductList();
+          wx.stopPullDownRefresh()
+        },
+        onReachBottom() {
+          if (!this.loadOver) {
+            this.setData({
+              pageIndex: this.pageIndex + 1,
+              isLoading: true,
+              loadOver: false
+            })
+            //this.getProductList();
+          }
+        },
+        //条件选择
+        choiceItem(e) {
+          console.log("choiceItem")
+          const downIcon = "../../images/selector/icon-down-black.png";
+          const upIcon = "../../images/selector/icon-go-black.png";
+          console.log(e.currentTarget)
+          switch (e.currentTarget.dataset.item) {
+            case "1":
+              if (!this.chioceDistrict) {
+                this.districtChioceIcon= downIcon;
+                this.chioceDistrict= true;
+              } else {
+                this.chioceDistrict= false;
+                this.districtChioceIcon= upIcon;
+              }
+              break;
+            case "2":
+              if (!this.chioceSorting) {
+                this.sortingChioceIcon= downIcon;
+                this.chioceSorting= true;
+              } else {
+                this.chioceSorting= false;
+                this.sortingChioceIcon= upIcon;
+              }
+              break;
+            case "3":
+              if (!this.chioceFilter) {
+                this.chioceFilter= true;
+              } else {
+                this.chioceFilter= false;
+              }
+              break;
+          }
+        },
+        hideAllChioce() {
+          this.districtChioceIcon = "../../images/selector/icon-go-black.png";
+          this.sortingChioceIcon = "../../images/selector/icon-go-black.png";
+          this.chioceDistrict =  false;
+          this.chioceSorting = false;
+          this.chioceFilter = false;
+        },
+        selectDistrictParent(e) {
+          this.activeDistrictParentIndex = e.currentTarget.dataset.index;
+          this.activeDistrictName = this.districtList[e.currentTarget.dataset.index].district_name;
+          this.activeDistrictChildrenIndex =  0;
+          this.scrollTop = 0;
+          this.scrollIntoView = 0;
+          
+        },
+        selectDistrictChildren(e) {
+          var index = e.currentTarget.dataset.index;
+          var parentIndex = this.activeDistrictParentIndex == -1 ? 0 : this.activeDistrictParentIndex;
+          if (index == 0) {
+            this.setData({
+              activeDistrictName: this.districtList[parentIndex].district_name
+            })
+            this.activeDistrictName = this.districtList[parentIndex].district_children_list[index].district_name
+          } else {
+              this.activeDistrictName = this.districtList[parentIndex].district_children_list[index].district_name
+          }
+
+          this.districtChioceIcon = "../../images/selector/icon-go-black.png";
+          this.chioceDistrict = false;
+          this.activeDistrictChildrenIndex =  index;
+          this.productList = [];
+          this.pageIndex = 1;
+          this.loadOver =  false;
+          this.isLoading = true;
+          //this.getProductList();
+        },
+        //综合排序
+        selectSorting(e) {
+          var index = e.currentTarget.dataset.index;
+          this.sortingChioceIcon = "../../images/selector/icon-go-black.png";
+          this.chioceSorting = false;
+          this.activeSortingIndex =  index;
+          this.activeSortingName = this.sortingList[index].value;
+          this.productList = [];
+          this.pageIndex = 1;
+          this.loadOver =  false;
+          this.isLoading = true;
+        },
+        //筛选
+        selectFilter(e) {
+          var index = e.currentTarget.dataset.index;
+          var _filterList = this.filterList;
+          _filterList[index].selected = !_filterList[index].selected;
+          this.filterList = _filterList
+        },
+        resetFilter() {
+          var _filterList = this.filterList;
+          _filterList.forEach(function (e) {
+            e.selected = false;
+          })
+          this.filterList = _filterList
+        },
+        filterButtonClick() {
+          this.chioceFilter = false;
+          this.productList = [];
+          this.pageIndex =  1;
+          this.loadOver = false;
+          this.isLoading = true;
+          //this.getProductList();
+        },
+    }
+  }
+</script>

@@ -8,8 +8,8 @@
   /*条件选择*/
   
   .choice-bar {
-    position: fixed;
-    top: 0;
+    position: relative;
+    top: 0px;
     display: flex;
     width: 100vw;
     font-size: 16px;
@@ -59,7 +59,7 @@
     left: 0;
     width: 100%;
     background-color: #fff;
-    z-index: -1;
+    z-index: 0;
     font-size: 14px;
     border-bottom: 1rpx solid #ddd;
   }

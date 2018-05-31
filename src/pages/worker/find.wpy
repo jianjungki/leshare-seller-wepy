@@ -1,12 +1,7 @@
-<style  lang="less">
-.filter-area {
-  height: 80px;
-}
-</style>
 <template>
   <view class="container">
-      <view class='filter-area'></view>
       <SearchBar></SearchBar>
+       <Selector></Selector>
       <repeat for="{{page.list}}" key="index" index="index" item="item">
         <worker :item.sync="item"  @tap.user="detail"></worker>
       </repeat>
@@ -18,7 +13,8 @@
   import wepy from 'wepy'
   import workerlist from '../../api/worker'
   import Worker from '../../components/worker/worker'
-  import SearchBar from '../../components/weui/search_bar'
+  import SearchBar from '../../components/worker/searchbar'
+  import Selector from '../../components/worker/selector'
   import pagination from '../../mixins/pagination'
   import Toast from 'wepy-com-toast'
 
@@ -29,6 +25,7 @@
     components = {
       worker: Worker,
       SearchBar: SearchBar,
+      Selector: Selector,
       toast: Toast
     }
     data = {
