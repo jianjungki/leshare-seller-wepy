@@ -38,6 +38,12 @@
         </view>
     </view>
   </view>
+  <view class="wxSearch-section">
+    <view class="wxSearch-pancel">
+        <input bindinput="wxSearchInput" bindfocus="wxSearchFocus" value="" bindblur="wxSearchBlur" class="wxSearch-input" placeholder="搜索" />
+        <button class="wxSearch-button" bindtap="wxSearchAddHisKey" size="mini" plain="true">搜索</button>
+    </view>
+   </view>
 </template>
 
 
@@ -141,6 +147,10 @@
                     callBack();
                 }
             },
+            wxSearchTap(e){
+                var that = this
+                this.methods.wxSearchHiddenPancel(that);
+            },
             wxSearchInput(e, that, callBack){
                 var temData = this.wxSearchData;
                 var text = e.detail.value;
@@ -216,8 +226,8 @@
                 })
             },
             wxSearchAddHisKey(e, that) {
-                console.log("test search 111")
-                this.methods.wxSearchHiddenPancel(that);
+                //console.log("test search 111")
+                this.methods.wxSearchHiddenPancel(this);
                 var text = this.wxSearchData.value;
                 if(typeof(text) == "undefined" || text.length == 0){return;}
                 var value = wx.getStorageSync('wxSearchHisKeys');
@@ -231,7 +241,7 @@
                         key:"wxSearchHisKeys",
                         data:value,
                         success: function(){
-                            one.methods.getHisKeys(that);
+                            one.methods.getHisKeys(this);
                         }
                     })
                 }else{
@@ -241,7 +251,7 @@
                         key:"wxSearchHisKeys",
                         data:value,
                         success: function(){
-                            one.methods.getHisKeys(that);
+                            one.methods.getHisKeys(this);
                         }
                     })
                 }

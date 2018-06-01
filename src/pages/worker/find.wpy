@@ -58,7 +58,8 @@
       },
       tap () {
         console.log('do noting from ' + this.$name)
-      }
+      },
+      
     }
     async onLoad() {
       this.page = workerlist.page()
