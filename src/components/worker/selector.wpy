@@ -116,15 +116,21 @@
           console.log(e.currentTarget)
           switch (e.currentTarget.dataset.item) {
             case "1":
+              this.chioceSorting= false;
+              this.sortingChioceIcon= upIcon;
+              this.chioceFilter= false;
               if (!this.chioceDistrict) {
                 this.districtChioceIcon= downIcon;
                 this.chioceDistrict= true;
               } else {
                 this.chioceDistrict= false;
-                this.districtChioceIcon= upIcon;
+                this.districtChioceIcon= upIcon;  
               }
               break;
             case "2":
+              this.chioceDistrict= false;
+              this.districtChioceIcon= upIcon;
+              this.chioceFilter= false;
               if (!this.chioceSorting) {
                 this.sortingChioceIcon= downIcon;
                 this.chioceSorting= true;
@@ -134,6 +140,10 @@
               }
               break;
             case "3":
+              this.chioceDistrict= false;
+              this.districtChioceIcon= upIcon;
+              this.chioceSorting= false;
+              this.sortingChioceIcon= upIcon;
               if (!this.chioceFilter) {
                 this.chioceFilter= true;
               } else {
