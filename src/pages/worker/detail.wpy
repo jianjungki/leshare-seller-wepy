@@ -90,6 +90,13 @@
       phoneCall() {
         wepy.makePhoneCall({phoneNumber: '13750016732'});
       },
+      handleSelected(e){
+        console.log("handleSelected")
+        //console.log(e.value)
+      },
+      bindAgreeChange(e){
+        console.log("bind agree")
+      }
      
     };
    
