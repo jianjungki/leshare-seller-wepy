@@ -39,7 +39,7 @@
     <view class="listview-item" @tap="detail({{item.id}})">
         <view class="listview-user-avatar">
             <div class="avatar">
-            <image style="width: 100%; height: 105px;" mode="aspectFill" alt="头像" src="http://bmob-cdn-17537.b0.upaiyun.com/2018/03/22/6ce54b214052271a801e5b93c76566b0.jpg" />
+            <image style="width: 100%; height: 105px;" mode="aspectFill" alt="头像" src="https://huiqu-1251424007.cos.ap-guangzhou.myqcloud.com/images/6ce54b214052271a801e5b93c76566b0.jpg" />
             </div>
         </view>
         <view class="listview-user-descript">

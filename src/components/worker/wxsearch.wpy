@@ -167,9 +167,7 @@
                 }
                 temData.value = text;
                 temData.mindKeys = mindKeys;
-                
                 this.wxSearchData= temData
-                
             },
             wxSearchBlur(e, that, callBack) {
                 var temData = this.data.wxSearchData;

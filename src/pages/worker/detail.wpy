@@ -1,11 +1,11 @@
 <template>
   <view class="container">
     <view class="selector">
-      <selectab :total.sync="total" :value="value" bgColor="#444751" @selected="handleSelected" />
+      <selectab :total.sync="total" :value="value" bgColor="#444751" @selected.user="handleSelected" />
       <view class="weui-cells weui-cells_after-title">
             <view class="weui-cell weui-cell_input">
                 <view class="weui-cell__bd">
-                    <input class="weui-input" placeholder="{{selector.tips}}" />
+                    <input class="weui-input" id="calcValue" placeholder="{{selector.tips}}" value=""/>
                 </view>
             </view>
         </view>
@@ -21,7 +21,7 @@
             </view>
         </label>
     </checkbox-group>
-    <button class="weui-btn" type="primary">价格预估</button>
+    <button class="weui-btn" type="primary" @tap="calcPrice">价格预估</button>
 
     <!--预估价格页面-->
      <view class="calc-price">
@@ -50,7 +50,7 @@
   import wepy from 'wepy'
   import base from '../../mixins/base';
   import worker from '../../api/worker';
-  import Selectab from 'wepy-com-selectab'
+  import Selectab from '../../components/worker/selectab'
   import Tips from '../../utils/Tips';
   import Copyright from '../../components/common/copyright';
   export default class Detail extends wepy.page {
@@ -62,6 +62,11 @@
       value: '时薪计算',
       selector: {
         tips: "请输入所需工时",
+      },
+      wxCalc: {
+        value:{
+
+        }
       },
       init: false
     };
@@ -90,12 +95,18 @@
       phoneCall() {
         wepy.makePhoneCall({phoneNumber: '13750016732'});
       },
-      handleSelected(e){
-        console.log("handleSelected")
-        //console.log(e.value)
+      handleSelected(value, e){
+        if (value == "时薪计算"){
+          this.selector.tips = "请输入工作工时"
+        }else{
+          this.selector.tips = "请输入装修面积"
+        }
       },
       bindAgreeChange(e){
         console.log("bind agree")
+      },
+      calcPrice(e){
+        
       }
      
     };
