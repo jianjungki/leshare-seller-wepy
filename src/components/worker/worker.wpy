@@ -19,12 +19,17 @@
       margin: 0px 15px 0px 15px;
       .title{
         float: left;
-        height: 30%;
+        height: 20%;
       }
       .desc{
         float: left;
-        height: 70%;
+        height: 80%;
         overflow:hidden; 
+        margin: 5px 0px 5px 0px;
+      }
+      .distance{
+        float: left;
+        margin: 5px 0px 5px 0px;
       }
   }
   .listview-contact{
@@ -44,10 +49,13 @@
         </view>
         <view class="listview-user-descript">
             <div class="title" >
-            {{ item.real_name }}
+                {{ item.real_name }}
             </div>
             <div class="desc">
-            {{ item.descript }}
+                {{ item.descript }}
+                <div class="distance">
+                    <image class="icon" src="../../images/iconfont/address32.png"/>距离35m
+                </div>
             </div>
         </view>
         
